@@ -113,7 +113,8 @@ def add_features(df: pd.DataFrame) -> pd.DataFrame:
         df['month'] = df['Date'].dt.month
         df['day'] = df['Date'].dt.day
         
-        df['is_business_day'] = df['Date'].apply(lambda x: x == x.normalize() + BDay())
+        # Verifica se cada data é um dia útil
+        df['is_business_day'] = df['Date'].apply(lambda x: BDay().is_on_offset(x))
         df_business = df[df['is_business_day']]
         
         # Cálculo de rentabilidade considerando apenas dias úteis
